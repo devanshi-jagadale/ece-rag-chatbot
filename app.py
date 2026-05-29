@@ -10,6 +10,8 @@ import gradio as gr
 import gradio_client.utils as _cu
 import gradio.blocks as _gb
 
+from rag_chain import build_rag_chain, session_store
+
 # Replace the _DEFAULT_KEY and _chain lines at the top with this:
 _DEFAULT_KEY = os.getenv("GROQ_API_KEY", "")
 _chain = None
@@ -41,8 +43,6 @@ def _safe_get_api_info(self):
 
 _gb.Blocks.get_api_info = _safe_get_api_info
 # ────────────────────────────────────────────────────────────────────────────
-
-from rag_chain import build_rag_chain, session_store
 
 # Load API key from environment
 _DEFAULT_KEY = os.getenv("GROQ_API_KEY", "")
