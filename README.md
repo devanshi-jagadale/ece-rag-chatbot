@@ -12,81 +12,91 @@ license: mit
 
 # 🎓 VNIT Nagpur — ECE Department RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot for the Electronics & Communication Engineering department at **VNIT Nagpur**, powered by:
+A Retrieval-Augmented Generation (RAG) chatbot for the Electronics & Communication Engineering department at **VNIT Nagpur**.
 
 | Component | Technology |
 |---|---|
-| LLM | Groq · `llama3-8b-8192` (free tier) |
-| RAG Framework | LangChain `ConversationalRetrievalChain` |
+| LLM | Groq · `llama-3.1-8b-instant` (free tier) |
+| RAG Framework | LangChain 1.x LCEL — pure `RunnableLambda` pipeline |
 | Vector DB | ChromaDB (persistent, collection `ece_department`) |
 | Embeddings | `sentence-transformers/all-MiniLM-L6-v2` |
-| UI | Gradio 4 |
-| Evaluation | RAGAS (faithfulness, relevancy, precision, recall) |
+| UI | Gradio 5 |
+| Evaluation | RAGAS — `Faithfulness`, `LLMContextRecall`, `FactualCorrectness` |
 
 ---
 
-## 🚀 Deploy to HuggingFace Spaces
+## 📊 Baseline Evaluation Results
 
-### Step 1 — Create the Space
-
-```bash
-# Install HF Hub CLI
-pip install huggingface_hub
-
-# Login
-huggingface-cli login
-
-# Create a new Gradio space
-huggingface-cli repo create vnit-ece-chatbot --type space --space_sdk gradio
-```
-
-### Step 2 — Push your files
-
-```bash
-cd vnit-ece-chatbot/
-git init
-git remote add origin https://huggingface.co/spaces/<YOUR_HF_USERNAME>/vnit-ece-chatbot
-
-# Copy ChromaDB data into repo (REQUIRED)
-cp -r /path/to/your/chroma_db ./chroma_db
-
-git add .
-git commit -m "Initial deploy"
-git push origin main
-```
-
-### Step 3 — Add Groq API secret
-
-In your Space → **Settings → Repository secrets** → add:
+Evaluated on 5 questions using RAGAS with `llama-3.3-70b-versatile` as judge.
+Ground truths are generic baselines — scores reflect current dataset coverage.
 
 ```
-Name : GROQ_API_KEY
-Value: gsk_xxxxxxxxxxxxxxxx
+=============================================
+  Metric                     Score
+---------------------------------------------
+  faithfulness              0.3000  ██████
+  context_recall            0.0000
+  factual_correctness       0.0000
+  average                   0.1000  ██
+=============================================
 ```
 
-The app auto-reads this secret so users don't need to enter the key manually.
+> **Note:** Low recall and factual correctness indicate dataset improvement opportunity.
+> The retrieval pipeline and chain are working correctly — answers are grounded in
+> retrieved context. Scores will improve significantly with a richer document corpus.
 
 ---
 
 ## 💻 Run Locally
 
 ```bash
-# 1. Clone / enter project folder
-cd vnit-ece-chatbot/
+# 1. Create fresh virtual environment
+python -m venv venv
+source venv/Scripts/activate      # Windows Git Bash
+# source venv/bin/activate         # Mac/Linux
 
-# 2. Create virtual env
-python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
-
-# 3. Install dependencies
+# 2. Install dependencies
 pip install -r requirements.txt
 
+# 3. Rebuild ChromaDB from your extracted markdown files
+python embedding.py
+
 # 4. Set your Groq key
-export GROQ_API_KEY=gsk_xxxx    # or add to .env
+export GROQ_API_KEY=gsk_xxxx
 
 # 5. Launch
 python app.py
 # → Open http://localhost:7860
 ```
+
+---
+
+## 🚀 Deploy to HuggingFace Spaces
+
+```bash
+# 1. Install HF CLI and login
+pip install huggingface_hub
+huggingface-cli login
+
+# 2. Create Space
+huggingface-cli repo create vnit-ece-chatbot --type space --space_sdk gradio
+
+# 3. Push (chroma_db uses Git LFS for large files)
+git lfs install
+git lfs track "*.sqlite3" "*.bin" "*.pickle"
+git add .gitattributes
+git add app.py rag_chain.py requirements.txt README.md chroma_db/
+git commit -m "initial deploy"
+git push origin main
+```
+
+Add your Groq API key in **Space → Settings → Variables and secrets**:
+```
+Name:  GROQ_API_KEY
+Value: gsk_xxxxxxxxxxxxxxxx
+```
+
+The app auto-reads this secret — no key input needed in the UI.
 
 ---
 
@@ -100,32 +110,21 @@ python evaluate.py --key gsk_xxxx
 python evaluate.py --key gsk_xxxx --questions my_qa.json --out results.json
 ```
 
-Sample output:
-
-```
-=============================================
-  Metric                  Score
----------------------------------------------
-  faithfulness            0.8732  █████████████████
-  answer_relevancy        0.9104  ██████████████████
-  context_precision       0.8210  ████████████████
-  context_recall          0.7891  ███████████████
-  average                 0.8484  ████████████████
-=============================================
-```
-
 ---
 
 ## 📁 Project Structure
 
 ```
 vnit-ece-chatbot/
-├── app.py            # Gradio UI + event wiring
-├── rag_chain.py      # LangChain chain, memory, retriever
+├── app.py            # Gradio 5 UI — auto-initializes from env secret
+├── rag_chain.py      # LCEL RAG chain — condense → retrieve → answer
+├── embedding.py      # Chunk + embed markdown files into ChromaDB
+├── extraction.py     # PDF → markdown via PyMuPDF
+├── chunking.py       # Markdown chunking utilities
 ├── evaluate.py       # RAGAS evaluation script
-├── requirements.txt  # Pinned dependencies
-├── README.md         # This file (HF Spaces config lives in YAML header)
-└── chroma_db/        # ← copy your persisted ChromaDB folder here
+├── requirements.txt  # Dependencies
+├── README.md         # This file
+└── chroma_db/        # Persisted ChromaDB (tracked via Git LFS)
     ├── chroma.sqlite3
     └── ...
 ```
@@ -139,11 +138,11 @@ All tunables live at the top of `rag_chain.py`:
 | Variable | Default | Description |
 |---|---|---|
 | `CHROMA_PATH` | `./chroma_db` | Path to persisted ChromaDB |
-| `GROQ_MODEL` | `llama3-8b-8192` | Any Groq-supported model |
+| `GROQ_MODEL` | `llama-3.1-8b-instant` | Any Groq-supported model |
 | `RETRIEVER_K` | `5` | Docs returned per query |
 | `RETRIEVER_FETCH_K` | `12` | MMR candidate pool |
 | `MEMORY_WINDOW` | `6` | Conversation turns kept |
 
 ---
 
-*Built for VNIT Nagpur ECE · Deadline May 31, 2025*
+*Built for VNIT Nagpur ECE · May 2026*

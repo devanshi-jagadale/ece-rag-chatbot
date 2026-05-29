@@ -14,16 +14,16 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import InMemoryChatMessageHistory
 
-# ── Config ────────────────────────────────────────────────────────────────────
+#  Config 
 CHROMA_PATH       = os.getenv("CHROMA_PATH", "./chroma_db")
 COLLECTION_NAME   = "ece_department"
 EMBEDDING_MODEL   = "all-MiniLM-L6-v2"
-GROQ_MODEL        = "llama-3.1-8b-instant"   # fast, free-tier, current
-RETRIEVER_K       = 5
+GROQ_MODEL        = "llama-3.3-70b-versatile"   # fast, free-tier, current
+RETRIEVER_K       = 3
 RETRIEVER_FETCH_K = 12
 MEMORY_WINDOW     = 6
 
-# ── Session storage ───────────────────────────────────────────────────────────
+#  Session storage ─
 session_store = {}
 
 def get_session_history(session_id: str) -> InMemoryChatMessageHistory:
@@ -34,7 +34,7 @@ def get_session_history(session_id: str) -> InMemoryChatMessageHistory:
         history.messages = history.messages[-(MEMORY_WINDOW * 2):]
     return history
 
-# ── Prompts ───────────────────────────────────────────────────────────────────
+#  Prompts ─
 _CONDENSE_PROMPT = ChatPromptTemplate.from_messages([
     ("system",
      "Given the chat history and the latest user question, "
@@ -56,7 +56,7 @@ Context:
     ("human", "{input}"),
 ])
 
-# ── Vectorstore ───────────────────────────────────────────────────────────────
+#  Vectorstore 
 def load_vectorstore() -> Chroma:
     embeddings = HuggingFaceEmbeddings(
         model_name=EMBEDDING_MODEL,
@@ -69,7 +69,7 @@ def load_vectorstore() -> Chroma:
         persist_directory=CHROMA_PATH,
     )
 
-# ── Chain ─────────────────────────────────────────────────────────────────────
+#  Chain 
 def build_rag_chain(groq_api_key: str):
     if not groq_api_key or not groq_api_key.strip():
         raise ValueError("Groq API key must not be empty.")
