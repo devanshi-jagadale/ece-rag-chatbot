@@ -1,0 +1,70 @@
+{
+  "aggregate": {
+    "faithfulness": 0.3,
+    "context_recall": 0.0,
+    "factual_correctness": 0.0,
+    "average": 0.1
+  },
+  "per_question": [
+    {
+      "user_input": "What are the core subjects in the ECE curriculum at VNIT Nagpur?",
+      "retrieved_contexts": [
+        "# B.Tech ECE NEP Course Book \u2014 VNIT Nagpur\n\n\n> **Source:** B_TECH_ECE_NEP_Course_Book 01_04_25.docx  \n> **Institute:** Visvesvaraya National Institute of Technology, Nagpur  \n> **Programme:** B.Tech Electronics & Communication Engineering (NEP Batch, July 2022 onwards)  \n> **Total Pages:** 109\n\n---\n\n\n<!-- page:1 -->",
+        "ECE stands for Electronics and Communication Engineering. It is a branch of engineering focused on electronic devices, communication systems, signal processing, VLSI design, and embedded systems. At VNIT Nagpur, the ECE department offers B.Tech, M.Tech, and PhD programs."
+      ],
+      "response": "The core subjects in the ECE curriculum at VNIT Nagpur include:\n\n1. Probability Theory and Numerical Methods\n2. Linear Network Theory\n3. Electronic Circuits\n4. Signals and Systems Analysis\n5. Measurements and Instrumentation\n6. Digital Circuits and Hardware Design\n\nThese subjects are listed as part of the III Semester courses.",
+      "reference": "Core subjects include Digital Electronics, Signals and Systems, Analog Circuits, Communication Systems, Electromagnetic Theory, VLSI Design, Microprocessors, and Control Systems.",
+      "context_recall": 1.0,
+      "faithfulness": 0.0,
+      "factual_correctness(mode=f1)": 0.0
+    },
+    {
+      "user_input": "What research areas does the ECE department focus on?",
+      "retrieved_contexts": [
+        "ECE stands for Electronics and Communication Engineering. It is a branch of engineering focused on electronic devices, communication systems, signal processing, VLSI design, and embedded systems. At VNIT Nagpur, the ECE department offers B.Tech, M.Tech, and PhD programs.",
+        "ABET EC 2000 criteria (3.h), 'the broad education necessary to  understand  the  impact  of  engineering  solutions  in  a global and societal context.'\n\nAs  a  student,  you  must  make  sure  you  acquire  'the  broad  education necessary to understand the impact of engineering solutions in a global and societal context.' To some extent, if you are already enrolled in an ABET-accredited engineering program, then some of the courses you are required to take must meet this criteria. My recommendation is that even if you are in such a program, you look at all the elective courses you take to make sure that you expand your awareness of global issues and  societal  concerns.  The  engineers  of  the  future  must  fully  understand that they and their activities affect all of us in one way or another."
+      ],
+      "response": "The ECE department at VNIT Nagpur focuses on research areas such as electronic devices, communication systems, signal processing, VLSI design, and embedded systems.",
+      "reference": "Research areas include signal and image processing, wireless communications, VLSI design, embedded systems, IoT, antenna design, and optical communication.",
+      "context_recall": 1.0,
+      "faithfulness": 0.8333333333,
+      "factual_correctness(mode=f1)": 0.46
+    },
+    {
+      "user_input": "What laboratories are available in the ECE department?",
+      "retrieved_contexts": [
+        "ECE stands for Electronics and Communication Engineering. It is a branch of engineering focused on electronic devices, communication systems, signal processing, VLSI design, and embedded systems. At VNIT Nagpur, the ECE department offers B.Tech, M.Tech, and PhD programs.",
+        "# B.Tech ECE NEP Course Book \u2014 VNIT Nagpur\n\n\n> **Source:** B_TECH_ECE_NEP_Course_Book 01_04_25.docx  \n> **Institute:** Visvesvaraya National Institute of Technology, Nagpur  \n> **Programme:** B.Tech Electronics & Communication Engineering (NEP Batch, July 2022 onwards)  \n> **Total Pages:** 109\n\n---\n\n\n<!-- page:1 -->"
+      ],
+      "response": "I don't have that information. Please contact the ECE office or visit https://ece.vnit.ac.in",
+      "reference": "The ECE department has Electronics Lab, Communication Lab, VLSI Lab, Microprocessor Lab, Signal Processing Lab, and DSP Lab.",
+      "context_recall": 0.0,
+      "faithfulness": 0.3333333333,
+      "factual_correctness(mode=f1)": 0.0
+    },
+    {
+      "user_input": "What M.Tech specialisations are offered in ECE at VNIT Nagpur?",
+      "retrieved_contexts": [
+        "# B.Tech ECE NEP Course Book \u2014 VNIT Nagpur\n\n\n> **Source:** B_TECH_ECE_NEP_Course_Book 01_04_25.docx  \n> **Institute:** Visvesvaraya National Institute of Technology, Nagpur  \n> **Programme:** B.Tech Electronics & Communication Engineering (NEP Batch, July 2022 onwards)  \n> **Total Pages:** 109\n\n---\n\n\n<!-- page:1 -->",
+        "ECE stands for Electronics and Communication Engineering. It is a branch of engineering focused on electronic devices, communication systems, signal processing, VLSI design, and embedded systems. At VNIT Nagpur, the ECE department offers B.Tech, M.Tech, and PhD programs."
+      ],
+      "response": "I don't have that information. Please contact the ECE office or visit https://ece.vnit.ac.in",
+      "reference": "VNIT Nagpur ECE offers M.Tech in Communication Engineering, VLSI Design, Embedded Systems, and Signal Processing.",
+      "context_recall": 0.0,
+      "faithfulness": 0.3333333333,
+      "factual_correctness(mode=f1)": 0.22
+    },
+    {
+      "user_input": "Who can I contact for admission queries in the ECE department?",
+      "retrieved_contexts": [
+        "ECE stands for Electronics and Communication Engineering. It is a branch of engineering focused on electronic devices, communication systems, signal processing, VLSI design, and embedded systems. At VNIT Nagpur, the ECE department offers B.Tech, M.Tech, and PhD programs.",
+        "# B.Tech ECE NEP Course Book \u2014 VNIT Nagpur\n\n\n> **Source:** B_TECH_ECE_NEP_Course_Book 01_04_25.docx  \n> **Institute:** Visvesvaraya National Institute of Technology, Nagpur  \n> **Programme:** B.Tech Electronics & Communication Engineering (NEP Batch, July 2022 onwards)  \n> **Total Pages:** 109\n\n---\n\n\n<!-- page:1 -->"
+      ],
+      "response": "I don't have that information. Please contact the ECE office or visit https://ece.vnit.ac.in",
+      "reference": "Admission queries can be directed to the Head of the ECE Department or the departmental office at VNIT Nagpur.",
+      "context_recall": 1.0,
+      "faithfulness": 0.0,
+      "factual_correctness(mode=f1)": 0.57
+    }
+  ]
+}

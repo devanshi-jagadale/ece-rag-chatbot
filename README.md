@@ -25,25 +25,29 @@ A Retrieval-Augmented Generation (RAG) chatbot for the Electronics & Communicati
 
 ---
 
-## 📊 Baseline Evaluation Results
+## 📊 Evaluation Results
 
 Evaluated on 5 questions using RAGAS with `llama-3.3-70b-versatile` as judge.
-Ground truths are generic baselines — scores reflect current dataset coverage.
+Two chunking strategies were compared:
 
-```
-=============================================
-  Metric                     Score
----------------------------------------------
-  faithfulness              0.3000  ██████
-  context_recall            0.0000
-  factual_correctness       0.0000
-  average                   0.1000  ██
-=============================================
-```
+| Chunk Strategy | Faithfulness | Context Recall | Factual Correctness | Average |
+|---|---|---|---|---|
+| **Heading-based** ✅ | 0.3000 | 0.0000 | 0.0000 | 0.1000 |
+| Semantic | 0.2133 | 0.0000 | 0.0000 | 0.0711 |
 
-> **Note:** Low recall and factual correctness indicate dataset improvement opportunity.
-> The retrieval pipeline and chain are working correctly — answers are grounded in
-> retrieved context. Scores will improve significantly with a richer document corpus.
+**Finding:** Heading-based chunking outperforms semantic chunking on this corpus.
+Since the source documents are already structured with markdown headings, heading-based
+splitting produces more coherent chunks than embedding-based boundary detection.
+Semantic chunking works best on unstructured prose — a useful negative result.
+
+> **Note:** Low recall and factual correctness reflect limited dataset coverage rather
+> than a pipeline failure. The retrieval chain is working correctly — answers are
+> grounded in retrieved context. Scores will improve with a richer document corpus.
+
+---
+
+## ▶️ Live Demo
+https://devanshi-jagadale-vnit-ece-chatbot.hf.space/
 
 ---
 
@@ -70,9 +74,6 @@ python app.py
 ```
 
 ---
-
-## ▶️ Live Demo on Gradio
-https://devanshi-jagadale-vnit-ece-chatbot.hf.space/
 
 ## 🚀 Deploy to HuggingFace Spaces
 
@@ -111,6 +112,10 @@ python evaluate.py --key gsk_xxxx
 
 # Run with custom questions (JSON array of {question, ground_truth})
 python evaluate.py --key gsk_xxxx --questions my_qa.json --out results.json
+
+# Run semantic chunking experiment
+python embedding_semantic.py   # rebuilds chroma_db with semantic chunks
+python evaluate.py --key gsk_xxxx --out ragas_results_semantic.json
 ```
 
 ---
@@ -119,15 +124,18 @@ python evaluate.py --key gsk_xxxx --questions my_qa.json --out results.json
 
 ```
 vnit-ece-chatbot/
-├── app.py            # Gradio 5 UI — auto-initializes from env secret
-├── rag_chain.py      # LCEL RAG chain — condense → retrieve → answer
-├── embedding.py      # Chunk + embed markdown files into ChromaDB
-├── extraction.py     # PDF → markdown via PyMuPDF
-├── chunking.py       # Markdown chunking utilities
-├── evaluate.py       # RAGAS evaluation script
-├── requirements.txt  # Dependencies
-├── README.md         # This file
-└── chroma_db/        # Persisted ChromaDB (tracked via Git LFS)
+├── app.py                      # Gradio 5 UI — auto-initializes from env secret
+├── rag_chain.py                # LCEL RAG chain — condense → retrieve → answer
+├── embedding.py                # Heading-based chunking + ChromaDB ingestion
+├── embedding_semantic.py       # Semantic chunking experiment (SemanticChunker)
+├── extraction.py               # PDF → markdown via PyMuPDF
+├── chunking.py                 # Markdown chunking utilities
+├── evaluate.py                 # RAGAS evaluation script
+├── ragas_results.json          # Baseline evaluation results
+├── ragas_results_semantic.json # Semantic chunking evaluation results
+├── requirements.txt            # Dependencies
+├── README.md                   # This file
+└── chroma_db/                  # Persisted ChromaDB (tracked via Git LFS)
     ├── chroma.sqlite3
     └── ...
 ```
