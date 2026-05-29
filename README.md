@@ -156,4 +156,7 @@ All tunables live at the top of `rag_chain.py`:
 
 ---
 
+## 🏗️ Architecture
+![Architecture](architecture.png)
+
 *Built for VNIT Nagpur ECE · May 2026*
