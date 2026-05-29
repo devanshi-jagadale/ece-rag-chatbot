@@ -10,6 +10,21 @@ import gradio as gr
 import gradio_client.utils as _cu
 import gradio.blocks as _gb
 
+# Replace the _DEFAULT_KEY and _chain lines at the top with this:
+_DEFAULT_KEY = os.getenv("GROQ_API_KEY", "")
+_chain = None
+
+def auto_initialize():
+    global _chain
+    if _DEFAULT_KEY:
+        try:
+            _chain = build_rag_chain(_DEFAULT_KEY)
+            print("Auto-initialized with env key")
+        except Exception as e:
+            print(f"Auto-init failed: {e}")
+
+auto_initialize()
+
 # Patch 1: fix get_type
 def _safe_get_type(schema):
     if not isinstance(schema, dict):
@@ -154,25 +169,11 @@ with gr.Blocks() as demo:
     with gr.Row():
 
         # LEFT PANEL
-        with gr.Column(scale=1, min_width=260):
-
-            api_key_box = gr.Textbox(
-                label="Groq API Key",
-                value=_DEFAULT_KEY,
-                placeholder="gsk_...",
-                type="password"
-            )
-
-            init_btn = gr.Button(
-                "Initialize",
-                variant="primary"
-            )
-
-            status_box = gr.Textbox(
-                label="Status",
-                interactive=False,
-                lines=2
-            )
+        # Replace the left column with this:
+        with gr.Column(scale=1, min_width=260, visible=False):
+            api_key_box = gr.Textbox(value=_DEFAULT_KEY, type="password")
+            init_btn = gr.Button("Initialize")
+            status_box = gr.Textbox()
 
             gr.Markdown("""
 ### Example Questions
