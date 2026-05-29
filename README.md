@@ -16,7 +16,7 @@ A Retrieval-Augmented Generation (RAG) chatbot for the Electronics & Communicati
 
 | Component | Technology |
 |---|---|
-| LLM | Groq · `llama-3.1-8b-instant` (free tier) |
+| LLM | Groq · `llama-3.3-70b-versatile` (free tier) |
 | RAG Framework | LangChain 1.x LCEL — pure `RunnableLambda` pipeline |
 | Vector DB | ChromaDB (persistent, collection `ece_department`) |
 | Embeddings | `sentence-transformers/all-MiniLM-L6-v2` |
@@ -138,7 +138,7 @@ All tunables live at the top of `rag_chain.py`:
 | Variable | Default | Description |
 |---|---|---|
 | `CHROMA_PATH` | `./chroma_db` | Path to persisted ChromaDB |
-| `GROQ_MODEL` | `llama-3.1-8b-instant` | Any Groq-supported model |
+| `GROQ_MODEL` | `llama-3.3-70b-versatile` | Any Groq-supported model |
 | `RETRIEVER_K` | `5` | Docs returned per query |
 | `RETRIEVER_FETCH_K` | `12` | MMR candidate pool |
 | `MEMORY_WINDOW` | `6` | Conversation turns kept |
