@@ -71,6 +71,9 @@ python app.py
 
 ---
 
+## ▶️ Live Demo on Gradio
+https://devanshi-jagadale-vnit-ece-chatbot.hf.space/
+
 ## 🚀 Deploy to HuggingFace Spaces
 
 ```bash
